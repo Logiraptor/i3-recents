@@ -1,7 +1,16 @@
 language: go
-
 go:
-  - 1.x
-
+- 1.x
 install:
-  - go get github.com/stretchr/testify/assert
+- go get github.com/stretchr/testify/assert
+
+before_deploy: "go build && zip i3-recents.zip i3-recents"
+
+deploy:
+  provider: releases
+  api_key:
+    secure: LeQdf1PspNMRrkkc2xBcp82WVV87+MvMOYUuKmqsRjkUkz8rB+AR+B67v/n4NYh+X5FZTjHC+DZKpi3+BfqVEujlPmU+Hi2/RueIFa8VHn/YUIpPp6wkInK7VD8v1aH6DdvcQDDphZaLQllipvqfqpoUtXVjmV5nNgI+RFaHBhP0bl/ltoFtlLP0uw5ZklN4rjVS4e6jQBNj6OOnmhvcCPlAZJa68ToShW9mcz77VsCcchPWxvX2xV+qEWjgtE40ZXuOanHUuJ2TlkD0mmFVrAsyqhOh7B/m69iED+b21nYM5diyWqqNqkShsHQVHgpJnihJ7f8tYNFMC/XGCGrvqM5AKqzm3eRtl48zQ6Jp8XF9FJsMwniXcDiRibCKB5zSeo/K8UjYVyliXAtkr8DRqjUAsp23Gm6iQYCq742wGfBL290R69It2uZbXxeLQ4DlHR+InvQgH2qYa7rQgwu7WJob8CuzXhgya5jemFYoQXKrVzzMtJVAu9Ol27w53uqfBpjKUKD0TeO7k55tdi0B/qHhdGnSpc5EpuKQxF/3GDZoA4az2UbhHN/+VrH6hoAugP1mOSk9UYz4t0Hld9zIBH4VrkoNsrwQScY9+wkX/w2YAX+kORoHEVERb3dQNFeGeEfioJCpaRnSRZG6sUxzV70Asm/idaVz19huBO4aIBY=
+  file: i3-recents.zip
+  on:
+    repo: Logiraptor/i3-recents
+    tags: true

@@ -1,5 +1,7 @@
 # i3-recents
 
+[![Build Status](https://travis-ci.org/Logiraptor/i3-recents.svg?branch=master)](https://travis-ci.org/Logiraptor/i3-recents)
+
 This is a simple server which will listen for events when window focus changes and allow you to focus the last focused window. This replaces the majority of *my* use of `Alt+Tab` on other window managers; ie quickly switching between two windows.
 
 ## Setup

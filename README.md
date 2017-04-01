@@ -8,15 +8,17 @@ This is a simple server which will listen for events when window focus changes a
 
 ## Setup
 
-Clone this repo, and start the server
+Download the compiled binary from the releases page, or build it yourself. There are no dependencies outside the Go standard library.
+
+Add a line to your i3 config to start the server automatically.
 
 ```
-go run main.go
+exec_always --no-startup-id path/to/i3-recents
 ```
 
-Add a hotkey to your i3 config to bind a key to make a request to the locally running server.
+Add a line to your i3 config so your chosen key will trigger the client
 
 ```
-bindsym Mod1+Tab exec curl http://localhost:7364
+bindsym Mod1+Tab exec path/to/i3-recents --back
 ```
 

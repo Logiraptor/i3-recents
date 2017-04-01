@@ -8,6 +8,12 @@ import (
 	"os/exec"
 	"strings"
 
+	"flag"
+
+	"io"
+
+	"encoding/json"
+
 	"github.com/Logiraptor/i3-recents/focus"
 	"github.com/Logiraptor/i3-recents/socket"
 )
@@ -25,11 +31,6 @@ import (
 // be changed when a change in the IPC API is done which
 // breaks compatibility (we hope that we don’t need to do that).
 
-// TODO: TDD
-// server / client in same binary
-// one has a flag
-// server keeps most recently focused window
-// client supports back command.
 // -- MVP
 // new states drain the forwards queue
 // backwards queue has a limit
@@ -39,6 +40,20 @@ import (
 const Subscribe = 2
 
 func main() {
+	back := flag.Bool("back", false, "Go back to the last focused window")
+	flag.Parse()
+
+	if *back {
+		r, err := http.Get("http://localhost:7364")
+		if err != nil {
+			fmt.Println("Failed to connect to i3-recents server: ", err.Error())
+		}
+		defer r.Body.Close()
+		io.Copy(os.Stdout, r.Body)
+		fmt.Println()
+		return
+	}
+
 	socketPath, err := getSocketPath()
 	if err != nil {
 		fmt.Println("getSocketPath:", err)
@@ -61,9 +76,9 @@ func main() {
 
 	http.HandleFunc("/", func(rw http.ResponseWriter, req *http.Request) {
 		server.goBack <- struct{}{}
-		fmt.Fprintf(rw, "Done")
+		json.NewEncoder(rw).Encode(focus.Success{})
 	})
-	http.ListenAndServe(":7364", nil)
+	fmt.Println(http.ListenAndServe(":7364", nil))
 }
 
 func getSocketPath() (string, error) {
